@@ -1,0 +1,26 @@
+객체 지향은 속성이 존재해야 한다.
+속성을 정의하는 곳은 __init__ 속성 파라미터이다.
+self는 객체 내부의 속성에 접근하는 키워드
+속성은 은닉화 때문에 반드시 self. 로만 접근할 수 있다.
+이는 보안의 기본처리이다. __init__ 은 클래스 내부에서만 접근하다.
+
+클래스 내부에서 메소드의 종류는 몇가지인가?
+dynamic, static
+기준: self
+self exist dynamic -> 데이터를 메모리에서 메소드가 유효한 시간동안만 존재한다. 그 메소드가 소멸된 후 값은 self 에 저장된다.
+self !exist static -> 반 영속적으로 저장됨
+
+
+git init
+git add .
+git commit -m "second commit"
+
+git remote add origin https://github.com/dudnjsckrgo/bigcamp.git
+git push -u origin master
+
+
+
+두번째 부터는 이거 3문장만 추가
+git add.
+git commit -m "17:53"
+git push origin master
