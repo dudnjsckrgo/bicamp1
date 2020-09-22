@@ -118,7 +118,7 @@ class Service:
             sublist.append(mytitle)
             sublist.append(mysrc)
             mylist.append(sublist)
-
+            
         Service.saveCsv(mycolumns,mylist,filename)
 
     @staticmethod

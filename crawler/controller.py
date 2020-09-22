@@ -15,29 +15,36 @@ class Controller:
     def __init__(self):
         self.entity = Entity()
         self.service = Service()
-    def naver_cartoon(self,url,new_folder_name,tag, attrs,replace_str,mycolumns,filename,mydict):
-        soup=self.service.get_url(url)
-        myfolder, mydict=self.service.create_folder_from_dict(mydict,new_folder_name)
-        mytarget = self.service.setting_targets(soup,tag, attrs)
-        self.service.loop_fun(mytarget,replace_str, mycolumns, filename,myfolder,mydict)
-    def movie_csv(self,url,tag,columns,filename):
-        soup=self.service.get_url(url)
-        target=self.service.setting_targets(soup,tag)
-        self.service.loop_fun2(target,columns,filename)
-if __name__=='__main__':
-    mydict = {'mon': '월요일', 'tue': '화요일', 'wed': '수요일', 'thu': '목요일', 'fri': '금요일', 'sat': '토요일', 'sun': '일요일'}
-    mycolumns = ['타이틀 번호', '요일', '제목', '링크']
-    filename = 'cartoon.csv'
-    url= 'https://comic.naver.com/webtoon/weekday.nhn'
-    new_folder_name='newfile'
-    tag='div'
-    attrs='thumb'
-    replace_str='/webtoon/list.nhn?'
-    api = Controller()
-    api.naver_cartoon(url,new_folder_name,tag, attrs,replace_str,mycolumns,filename,mydict)
 
-    mycolumns = ['순위', '제목', '변동', '변동폭']
-    url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
-    tag ='tr'
-    filename = 'naverMovieRank.csv'
-    api.movie_csv(url,tag,mycolumns,filename)
+    def naver_cartoon(self):
+        soup=self.service.get_url(self.entity.url)
+        myfolder, mydict=self.service.create_folder_from_dict(self.entity.dict,self.entity.new_folder_name)
+        mytarget = self.service.setting_targets(soup,self.entity.tag, self.entity.attrs)
+        self.service.loop_fun(mytarget,self.entity.replace_str, self.entity.columns, self.entity.filename,myfolder,mydict)
+
+    def movie_csv(self):
+        soup=self.service.get_url(self.entity.url)
+        target=self.service.setting_targets(soup,self.entity.tag)
+        self.service.loop_fun2(target,self.entity.columns,self.entity.filename)
+
+if __name__=='__main__':
+
+    api = Controller()
+
+    api.entity.dict = {'mon': '월요일', 'tue': '화요일', 'wed': '수요일', 'thu': '목요일', 'fri': '금요일', 'sat': '토요일', 'sun': '일요일'}
+    api.entity.columns = ['타이틀 번호', '요일', '제목', '링크']
+    api.entity.filename = 'cartoon.csv'
+    api.entity.url = 'https://comic.naver.com/webtoon/weekday.nhn'
+    api.entity.new_folder_name='newfile'
+    api.entity.tag='div'
+    api.entity.attrs='thumb'
+    api.entity.replace_str ='/webtoon/list.nhn?'
+
+    api.naver_cartoon()
+
+    api.entity.columns = ['순위', '제목', '변동', '변동폭']
+    api.entity.url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
+    api.entity.tag ='tr'
+    api.entity.filename = 'naverMovieRank.csv'
+
+    api.movie_csv()
