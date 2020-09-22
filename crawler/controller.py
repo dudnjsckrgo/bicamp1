@@ -29,3 +29,4 @@ if __name__=='__main__':
     service.create_folder_weekend(new_folder_name)
     service.setting_target(tag, attrs)
     service.loop_fun(replace_str,mycolumns,filename)
+    
