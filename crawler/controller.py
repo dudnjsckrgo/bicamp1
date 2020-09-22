@@ -15,6 +15,15 @@ class Controller:
     def __init__(self):
         self.entity = Entity()
         self.service = Service()
+    def naver_cartoon(self,url,new_folder_name,tag, attrs,replace_str,mycolumns,filename):
+        self.service.get_url(url)
+        self.service.create_folder_weekend(new_folder_name)
+        self.service.setting_target(tag, attrs)
+        self.service.loop_fun(replace_str, mycolumns, filename)
+    def movie_csv(self,url,tag,mycolumns,filename):
+        self.service.get_url(url)
+        self.service.setting_target(tag)
+        self.service.loop_fun2(mycolumns,filename)
 if __name__=='__main__':
     mycolumns = ['타이틀 번호', '요일', '제목', '링크']
     filename = 'cartoon.csv'
@@ -24,9 +33,9 @@ if __name__=='__main__':
     attrs='thumb'
     replace_str='/webtoon/list.nhn?'
     api = Controller()
-    service= Service()
-    service.get_url(url)
-    service.create_folder_weekend(new_folder_name)
-    service.setting_target(tag, attrs)
-    service.loop_fun(replace_str,mycolumns,filename)
-    
+    api.naver_cartoon(url,new_folder_name,tag, attrs,replace_str,mycolumns,filename)
+    mycolumns = ['순위', '제목', '변동', '변동폭']
+    url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
+    tag ='tr'
+    filename = 'naverMovieRank.csv'
+    api.movie_csv(url,tag,mycolumns,filename)
