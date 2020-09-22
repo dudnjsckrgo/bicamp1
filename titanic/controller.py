@@ -1,8 +1,8 @@
 import sys
 sys.path.insert(0, '/Users/dudnj/bitcampt')
-from titanic.entity import Entity
+from entity import Entity
 
-from titanic.service import Service
+from service import Service
 
 # 내부에서는 모듈의 객체를 인스턴스화해야 한다.
 # 대문자는 클래스

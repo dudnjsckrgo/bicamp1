@@ -1,4 +1,4 @@
-from entity import Entity
+from crawler.entity import Entity
 
 class Service:
     def __init__(self):
