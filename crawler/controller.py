@@ -48,7 +48,7 @@ if __name__=='__main__':
     api.naver_cartoon()
 
     api2 = Controller()
-    
+
     api2.entity.columns = ['순위', '제목', '변동', '변동폭']
     api2.entity.url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
     api2.entity.tag ='tr'
