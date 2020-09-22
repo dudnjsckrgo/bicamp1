@@ -36,7 +36,6 @@ class Controller:
 if __name__=='__main__':
 
     api = Controller()
-
     api.entity.dict = {'mon': '월요일', 'tue': '화요일', 'wed': '수요일', 'thu': '목요일', 'fri': '금요일', 'sat': '토요일', 'sun': '일요일'}
     api.entity.columns = ['타이틀 번호', '요일', '제목', '링크']
     api.entity.filename = 'cartoon.csv'
@@ -48,10 +47,11 @@ if __name__=='__main__':
 
     api.naver_cartoon()
 
-    api.entity.columns = ['순위', '제목', '변동', '변동폭']
-    api.entity.url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
-    api.entity.tag ='tr'
-    api.entity.attrs = ''
-    api.entity.filename = 'naverMovieRank.csv'
+    api2 = Controller()
+    
+    api2.entity.columns = ['순위', '제목', '변동', '변동폭']
+    api2.entity.url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
+    api2.entity.tag ='tr'
+    api2.entity.filename = 'naverMovieRank.csv'
 
-    api.movie_csv()
+    api2.movie_csv()
