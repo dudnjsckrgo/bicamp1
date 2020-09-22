@@ -2,16 +2,19 @@ from bs4 import BeautifulSoup
 from urllib.request import urlopen
 import os, shutil
 from pandas import DataFrame
+from crawler.entity import Entity
+
 class Service:
     def __init__(self):
-        pass
+        self.entity = Entity()
     def bugs_music(self):
         pass
     def naver_movie(self):
         pass
     # 이 메소드는 url을 받아서 soup 속성을 초기화한다.
     @staticmethod
-    def get_url(url)-> object:
+    def get_url(this)-> object:
+        url = this.url
         myparser = 'html.parser' # html.parser : 간단한 HTML과 XHTML 구문 분석기. 표준 라이브러리
         response = urlopen(url)
         soup = BeautifulSoup(response, myparser)
@@ -19,9 +22,10 @@ class Service:
 
     # 이 메소드는 folderName을 가진 이름의 파일을 현재 폴더 하위에 생성한다.
     @staticmethod
-    def create_folder_from_dict(dict,folderName)->object:
+    def create_folder_from_dict(this)->object:
         # shutil : shell utility : 고수준 파일 연산. 표준 라이브러리
-        mydict = dict
+        mydict = this.dict
+        folderName= this.new_folder_name
         myfolder = './'+folderName +'/' # 유닉스 기반은 '/'이 구분자
         try:
             if not os.path.exists(myfolder):
@@ -38,12 +42,12 @@ class Service:
 
         except FileExistsError as err:
             print(err)
-        return (myfolder,mydict)
+        return myfolder
 
     # mysrc 이미지파일의 url myweekday는 요일정 mytitle에 이미지 제목이 들어간다.
     @staticmethod
-    def saveImageFile(folder, src:str , key:str, title :str,dict):
-        myfolder,mysrc,mykey,mytitle,mydict = folder,src,key,title,dict
+    def saveImageFile( myfolder,mysrc,mykey,mytitle,this):
+        mydict = this.dict
 
         image_file = urlopen(mysrc)
         filename = myfolder + mydict[mykey] + '\\' + mytitle + '.jpg'
@@ -56,13 +60,12 @@ class Service:
         # soup의 태그와 속성을 이용해 target을 정하고 타겟의 길이를 프린트한다.
 
     @staticmethod
-    def setting_targets(soup,*args):
-        print(len(args))
-        if len(args)==2:
+    def setting_targets(soup,this):
 
-            mytarget =soup.find_all(args[0], attrs={'class': args[1]})
-        if len(args)==1:
-            mytarget = soup.find_all(args[0])
+        if this.attrs != '':
+            mytarget =soup.find_all(this.tag, attrs={'class': this.attrs})
+        if this.attrs == '':
+            mytarget = soup.find_all(this.tag)
         len_mytarget=  len(mytarget)
         print(mytarget)
         print("타겟의 길이:",len_mytarget)
@@ -78,10 +81,9 @@ class Service:
         print(mytarget)
 
         return mytarget
-
     @staticmethod
-    def loop_fun(mytarget,replace_str,mycolumns,filename,myfolder,mydict):
-
+    def loop_fun(mytarget,this,myfolder):
+        replace_str,filename=this.replace_str, this.filename
         mylist = []  # 데이터를 저장할 리스트
 
         for abcd in mytarget:
@@ -108,7 +110,7 @@ class Service:
             mysrc = imgtag.attrs['src']
             # print(mysrc)
 
-            Service.saveImageFile(myfolder,mysrc, mykey, mytitle,mydict)
+            Service.saveImageFile(myfolder,mysrc, mykey, mytitle,this)
 
             # break
 
@@ -119,18 +121,19 @@ class Service:
             sublist.append(mysrc)
             mylist.append(sublist)
             
-        Service.saveCsv(mycolumns,mylist,filename)
+        Service.saveCsv(this,mylist)
 
     @staticmethod
-    def saveCsv(mycolumns,mylist,filename,):
-        myframe = DataFrame(mylist, columns=mycolumns)
+    def saveCsv(this,mylist):
+        filename= this.filename
+        myframe = DataFrame(mylist, columns=this.columns)
 
         myframe.to_csv(filename, encoding='utf-8', index=False)
         print(filename + '파일로 저장됨')
 
         print('finished')
     @staticmethod
-    def loop_fun2(target,columns,filename):
+    def loop_fun2(target,this):
         mytrs=target
         no = 0  # 순서를 의미하는 번호
         totallist = []  # 전체를 저장할 리스트
@@ -168,4 +171,4 @@ class Service:
                 # csv로 저장
                 totallist.append((newno, title, up_down, change))
 
-        Service.saveCsv(columns,totallist,filename)
+        Service.saveCsv(this,totallist)

@@ -17,15 +17,21 @@ class Controller:
         self.service = Service()
 
     def naver_cartoon(self):
-        soup=self.service.get_url(self.entity.url)
-        myfolder, mydict=self.service.create_folder_from_dict(self.entity.dict,self.entity.new_folder_name)
-        mytarget = self.service.setting_targets(soup,self.entity.tag, self.entity.attrs)
-        self.service.loop_fun(mytarget,self.entity.replace_str, self.entity.columns, self.entity.filename,myfolder,mydict)
+        service = self.service
+        this = self.entity
+        soup=service.get_url(this)
+        myfolder=service.create_folder_from_dict(this)
+        mytarget = service.setting_targets(soup,this)
+        service.loop_fun(mytarget,this, myfolder)
 
     def movie_csv(self):
-        soup=self.service.get_url(self.entity.url)
-        target=self.service.setting_targets(soup,self.entity.tag)
-        self.service.loop_fun2(target,self.entity.columns,self.entity.filename)
+        service = self.service
+        this = self.entity
+        print(this.url)
+        soup=service.get_url(this)
+
+        target= service.setting_targets(soup,this)
+        self.service.loop_fun2(target,this)
 
 if __name__=='__main__':
 
@@ -45,6 +51,7 @@ if __name__=='__main__':
     api.entity.columns = ['순위', '제목', '변동', '변동폭']
     api.entity.url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
     api.entity.tag ='tr'
+    api.entity.attrs = ''
     api.entity.filename = 'naverMovieRank.csv'
 
     api.movie_csv()
