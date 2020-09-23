@@ -2,6 +2,7 @@
 import nltk
 from miner.entity import Entity
 from miner.service import Service
+from gensim.models import word2vec
 class Controller:
     def __init__(self):
         pass
@@ -47,6 +48,22 @@ class Controller:
         filename = '문재인대통령신년사.txt'
         model_filename = 'word2vec.model'
         Service.create_word2vec(context,filename,prepro_file,model_filename)
+        model = word2vec.Word2Vec.load(model_filename)
+        print(type(model))
+
+        # most_similar : positive에 명시된 단어에 대하여 유사도가 높은 항목을
+        # topn 개만 보여 주세요.
+        bargraph = model.wv.most_similar(positive=['국민'], topn=10)
+        print(bargraph)
+
+        piegraph = model.wv.most_similar(positive=['남북'], topn=5)
+        print(piegraph)
+
+
+        Service.showGraph(bargraph)
+
+        Service.makePie(piegraph)
+
 if __name__ == '__main__':
     def print_menu():
         print('0. Exit')
