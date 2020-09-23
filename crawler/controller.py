@@ -1,3 +1,4 @@
+
 from crawler.entity import Entity
 
 from crawler.service import Service
@@ -15,7 +16,7 @@ class Controller:
     def __init__(self):
         self.entity = Entity()
         self.service = Service()
-
+        
     def naver_cartoon(self):
         service = self.service
         this = self.entity
@@ -23,13 +24,13 @@ class Controller:
         myfolder=service.create_folder_from_dict(this)
         mytarget = service.setting_targets(soup,this)
         service.loop_fun(mytarget,this, myfolder)
-
+        
     def movie_csv(self):
         service = self.service
         this = self.entity
         print(this.url)
         soup=service.get_url(this)
-
+        
         target= service.setting_targets(soup,this)
         self.service.loop_fun2(target,this)
 
@@ -45,7 +46,7 @@ if __name__=='__main__':
     api.entity.attrs='thumb'
     api.entity.replace_str ='/webtoon/list.nhn?'
 
-    api.naver_cartoon()
+    # api.naver_cartoon()
 
     api2 = Controller()
 
@@ -53,5 +54,5 @@ if __name__=='__main__':
     api2.entity.url = "http://movie.naver.com/movie/sdb/rank/rmovie.nhn"
     api2.entity.tag ='tr'
     api2.entity.filename = 'naverMovieRank.csv'
-
+    
     api2.movie_csv()
