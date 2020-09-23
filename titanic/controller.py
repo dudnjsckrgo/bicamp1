@@ -65,10 +65,17 @@ class Controller:
         return this
 
     
-    def learing(self):  # evaluation과 합친다.
-        pass
+    def learing(self,train,test):  # evaluation과 합친다.
+        service = self.service
+        this = self.modeling(train,test)
+        print(f'결정 트리:{service.accuracy_by_dtree(this)}' )
+        print(f'nb:{service.accuracy_by_nb(this)}')
+        print(f'knn:{service.accuracy_by_knn(this)}')
+        print(f'svm:{service.accuracy_by_svm(this)}')
+        print(f'rforest:{service.accuracy_by_rforest(this)}')
+
     def submit(self): # 파일로 저장
         pass
 if __name__ =='__main__':
     ctrl = Controller()
-    ctrl.modeling('train.csv', 'test.csv')
+    ctrl.learing('train.csv', 'test.csv')

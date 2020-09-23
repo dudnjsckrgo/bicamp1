@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.neighbors import kneighbors_graph
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
@@ -157,6 +157,36 @@ class Service:
         this.train = this.train
         this.test = this.test
         return this
+    @staticmethod
+    def create_k_fold():
+        return KFold(n_splits=10,shuffle=True,random_state=0)
+
+    def accuracy_by_dtree(self,this):
+        dtree = DecisionTreeClassifier()
+        score =cross_val_score(dtree, this.train,this.label,cv=Service.create_k_fold(),n_jobs=1, scoring='accuracy')
+        return round(np.mean(score)*100,2)
+    def accuracy_by_rforest(self,this):
+        rforest = RandomForestClassifier()
+        score = cross_val_score(rforest, this.train, this.label, cv=Service.create_k_fold(), n_jobs=1,
+                                scoring='accuracy')
+        return round(np.mean(score) * 100, 2)
+
+    def accuracy_by_nb(self,this):
+        nb = GaussianNB()
+        score = cross_val_score(nb, this.train, this.label, cv=Service.create_k_fold(), n_jobs=1,
+                                scoring='accuracy')
+        return round(np.mean(score) * 100, 2)
+    def accuracy_by_knn(self,this):
+        knn = KNeighborsClassifier()
+        score = cross_val_score(knn, this.train, this.label, cv=Service.create_k_fold(), n_jobs=1,
+                                scoring='accuracy')
+        return round(np.mean(score) * 100, 2)
+    def accuracy_by_svm(self,this):
+        svm = SVC()
+        score = cross_val_score(svm, this.train, this.label, cv=Service.create_k_fold(), n_jobs=1,
+                                scoring='accuracy')
+        return round(np.mean(score) * 100, 2)
+
 # variable x=3 스칼라
 # array [element=(varable)]
 # matrix  [[vector=(array)]] 
