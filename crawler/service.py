@@ -4,14 +4,9 @@ import os, shutil
 from pandas import DataFrame
 from crawler.entity import Entity
 
-class Service:
+class Service(Entity):
     def __init__(self):
-        self.entity = Entity()
-    def bugs_music(self):
         pass
-    def naver_movie(self):
-        pass
-    # 이 메소드는 url을 받아서 soup 속성을 초기화한다.
     @staticmethod
     def get_url(this)-> object:
         url = this.url
@@ -81,47 +76,7 @@ class Service:
         print(mytarget)
 
         return mytarget
-    @staticmethod
-    def loop_fun(mytarget,this,myfolder):
-        replace_str,filename=this.replace_str, this.filename
-        mylist = []  # 데이터를 저장할 리스트
 
-        for abcd in mytarget:
-            myhref = abcd.find('a').attrs['href']
-            print('myhref:', myhref)
-            print('_' * 30)
-            myhref = myhref.replace( replace_str , '')
-            result = myhref.split('&')
-            print('myhref:',myhref)
-            print('_'*30)
-            print('result:',result)
-            print('_'*30)
-            mytitleid = result[0].split('=')[1]
-            mykey = result[1].split('=')[1]
-            print('mytitleid:',mytitleid)
-            print('_' * 30)
-            print("myweekday:",mykey)
-            print('_' * 30)
-            imgtag = abcd.find('img')
-            mytitle = imgtag.attrs['title'].strip()
-            mytitle = mytitle.replace('?', '').replace(':', '')
-            print(mytitle)
-
-            mysrc = imgtag.attrs['src']
-            # print(mysrc)
-
-            Service.saveImageFile(myfolder,mysrc, mykey, mytitle,this)
-
-            # break
-
-            sublist = []
-            sublist.append(mytitleid)
-            sublist.append(mykey)
-            sublist.append(mytitle)
-            sublist.append(mysrc)
-            mylist.append(sublist)
-            
-        Service.saveCsv(this,mylist)
 
     @staticmethod
     def saveCsv(this,mylist):
@@ -132,6 +87,9 @@ class Service:
         print(filename + '파일로 저장됨')
 
         print('finished')
+
+
+class Loop(Service):
     @staticmethod
     def loop_fun2(target,this):
         mytrs=target
@@ -172,3 +130,44 @@ class Service:
                 totallist.append((newno, title, up_down, change))
 
         Service.saveCsv(this,totallist)
+    @staticmethod
+    def loop_fun(mytarget,this,myfolder):
+        replace_str,filename=this.replace_str, this.filename
+        mylist = []  # 데이터를 저장할 리스트
+
+        for abcd in mytarget:
+            myhref = abcd.find('a').attrs['href']
+            print('myhref:', myhref)
+            print('_' * 30)
+            myhref = myhref.replace( replace_str , '')
+            result = myhref.split('&')
+            print('myhref:',myhref)
+            print('_'*30)
+            print('result:',result)
+            print('_'*30)
+            mytitleid = result[0].split('=')[1]
+            mykey = result[1].split('=')[1]
+            print('mytitleid:',mytitleid)
+            print('_' * 30)
+            print("myweekday:",mykey)
+            print('_' * 30)
+            imgtag = abcd.find('img')
+            mytitle = imgtag.attrs['title'].strip()
+            mytitle = mytitle.replace('?', '').replace(':', '')
+            print(mytitle)
+
+            mysrc = imgtag.attrs['src']
+            # print(mysrc)
+
+            Service.saveImageFile(myfolder,mysrc, mykey, mytitle,this)
+
+            # break
+
+            sublist = []
+            sublist.append(mytitleid)
+            sublist.append(mykey)
+            sublist.append(mytitle)
+            sublist.append(mysrc)
+            mylist.append(sublist)
+            break
+        Service.saveCsv(this,mylist)

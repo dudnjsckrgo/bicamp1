@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass
 class Entity:
     url :str = ''
-    filename=''
+    filename:str =  ''
     parser : str = ''
     path: str = ''
     api : str = ''
@@ -15,3 +15,4 @@ class Entity:
     tag :str =''
     attrs :str=''
     replace_str: str =''
+    context = './data/'

@@ -1,0 +1,2 @@
+model_checkpoint_path: "/Users/dudnj/bitcamp/SbaProjects/price_prediction/data/saved_model.ckpt"
+all_model_checkpoint_paths: "/Users/dudnj/bitcamp/SbaProjects/price_prediction/data/saved_model.ckpt"

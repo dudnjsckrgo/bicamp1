@@ -11,3 +11,9 @@ git push -u origin master
 git add.
 git commit -m "17:53"
 git push origin master
+
+git init
+git add .
+git commit -m "메모"
+git remote alt https://github.com/super1947/payload_covid19_noti_app.git
+git push --force-with-lease alt
