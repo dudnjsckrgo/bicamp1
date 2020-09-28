@@ -1,11 +1,12 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
+print(os.path.dirname(os.path.abspath(os.path.dirname(__file__))))
 from util.file_handler import FileReader
 import pandas as pd
 import numpy as np
 import tensorflow as tf
-
+from config import basedir
 class Cabbage:
     year: int = 0
     avgTemp: float = 0.0
@@ -16,14 +17,14 @@ class Cabbage:
     context =  '/Users/dudnj/bitcamp/SbaProjects/price_prediction/data/'
     def __init__(self):
         self.fileReader = FileReader() # 얘 안바뀌죠.. 기능은 뭐다 -> 상수로 처리한다
-        self.context =  '/Users/dudnj/bitcamp/SbaProjects/price_prediction/data/'
-    def __init__(self):
-        self.fileReader = FileReader() 
+        self.kaggle = os.path.join(basedir,'price_prediction')
+        self.data = os.path.join(self.kaggle,'data')
+ 
     def new_model(self, payload) -> object:
         this = self.fileReader
-        this.context = self.context
+        this.data = self.data
         this.fname = payload
-        return pd.read_csv(this.context + this.fname, sep=',')
+        return pd.read_csv( os.path.join(this.data, this.fname), sep=',')
 
     def create_tf(self, payload):
         xy = np.array(payload, dtype=np.float32)
@@ -47,7 +48,7 @@ class Cabbage:
                 print(f'- 배추가격 : {hypo_[0]}')
 
         saver = tf.compat.v1.train.Saver()
-        saver.save(sess, self.context+'saved_model.ckpt')
+        saver.save(sess, os.path.join(this.data, 'saved_model.ckpt'))
         print('저장완료')
     def test(self):
         self.avgPrice = 100
@@ -77,7 +78,7 @@ class Cabbage:
         saver = tf.train.Saver()
         with tf.Session() as sess:
             sess.run(tf.compat.v1.global_variables_initializer())
-            saver.restore(sess, self.context+'saved_model.ckpt')
+            saver.restore(sess, os.path.join(this.data, 'saved_model.ckpt'))
             data = [[self.avgTemp, self.minTemp, self.maxTemp, self.rainFall],]
             arr = np.array(data, dtype = np.float32)
             dict = sess.run(tf.matmul(X, W) + b, {X: arr[0:4]})
